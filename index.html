@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Lógica de Programação com JavaScript (inline)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* Só 2 cores na página: azul e laranja. O resto é preto, cinza e branco. */
+    :root {
+      --preto: #0b0b0d;
+      --cinza: #17181c;
+      --branco: #f2f2f2;
+      --azul: #2f8cff;      /* opções: títulos, bordas e botões */
+      --laranja: #ffa63d;   /* respostas: onde aparece o resultado */
+    }
+
+    body {
+      font-family: Verdana, Geneva, sans-serif;
+      background: var(--preto);
+      color: var(--branco);
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 16px 40px;
+      line-height: 1.5;
+    }
+
+    /* Faixa de cima com o título */
+    header {
+      margin: 0 -16px 24px;
+      padding: 28px 16px;
+      border-bottom: 4px solid var(--azul);
+    }
+    header h1 { margin: 0 0 6px; font-family: Georgia, serif; font-size: 1.8em; color: var(--azul); }
+    header p { margin: 0; }
+
+    h2 { margin: 0 0 10px; font-family: Georgia, serif; color: var(--azul); }
+
+    /* Cada seção é uma caixa cinza escura com borda azul */
+    section {
+      background: var(--cinza);
+      border: 2px solid var(--azul);
+      padding: 16px;
+      margin: 22px 0;
+    }
+
+    .titulo-exercicios {
+      color: var(--azul);
+      border-bottom: 2px solid var(--azul);
+      display: block;
+      padding-bottom: 6px;
+      margin-top: 36px;
+      font-family: Georgia, serif;
+      font-size: 1.5em;
+    }
+
+    button {
+      padding: 8px 14px;
+      background: var(--azul);
+      color: #fff;
+      font-weight: bold;
+      border: 2px solid var(--azul);
+      cursor: pointer;
+    }
+    button:hover { background: transparent; color: var(--azul); }
+    button:active { transform: translate(2px, 2px); }
+
+    /* Caixa de resposta em laranja */
+    .out {
+      background: var(--preto);
+      color: var(--laranja);
+      border: 2px dashed var(--laranja);
+      padding: 10px;
+      min-height: 26px;
+      white-space: pre-wrap;
+    }
+
+    code { background: var(--preto); color: var(--laranja); padding: 1px 6px; }
+
+    .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+    input[type="number"], input[type="text"] {
+      padding: 8px;
+      border: 2px solid var(--azul);
+      width: 100%;
+      box-sizing: border-box;
+      background: var(--preto);
+      color: var(--branco);
+    }
+    input::placeholder { color: #8a8a90; }
+    input:focus { outline: 2px solid var(--laranja); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Lógica de Programação com JavaScript</h1>
+    <p>Abra o <b>Console</b> do navegador (F12) para ver os <code>console.log</code>. Clique nos botões e teste cada exemplo.</p>
+  </header>
+
+  <section id="sec-variaveis">
+    <h2>1) Variáveis, tipos e saída</h2>
+    <div class="grid">
+      <button onclick="exVariaveis()">Rodar exemplo</button>
+      <div id="out-variaveis" class="out"></div>
+    </div>
+  </section>
+
+  <section id="sec-io">
+    <h2>2) Entrada e saída</h2>
+    <button onclick="exIO()">Perguntar nome</button>
+  </section>
+
+  <section id="sec-if">
+    <h2>3) Decisão: if / else</h2>
+    <div class="grid">
+      <input id="idade" type="number" placeholder="Digite sua idade" />
+      <button onclick="exIf()">Verificar maioridade</button>
+      <div id="out-if" class="out"></div>
+    </div>
+  </section>
+
+  <section id="sec-loops">
+    <h2>4) Laços: for e while</h2>
+    <div class="grid">
+      <button onclick="exFor()">Contar 1 a 5 (for)</button>
+      <button onclick="exWhile()">Contar 5 a 1 (while)</button>
+      <div id="out-loops" class="out"></div>
+    </div>
+  </section>
+
+  <section id="sec-array">
+    <h2>5) Arrays (listas)</h2>
+    <div class="grid">
+      <button onclick="exArray()">Listar frutas</button>
+      <div id="out-array" class="out"></div>
+    </div>
+  </section>
+
+  <section id="sec-funcoes">
+    <h2>6) Funções (reaproveitar código)</h2>
+    <div class="grid">
+      <input id="a" type="number" placeholder="A (número)" />
+      <input id="b" type="number" placeholder="B (número)" />
+      <button onclick="exFuncao()">Somar A + B</button>
+      <div id="out-funcao" class="out"></div>
+    </div>
+  </section>
+
+  <section id="sec-dom">
+    <h2>7) Eventos &amp; DOM</h2>
+    <div class="grid">
+      <input id="n1" type="number" placeholder="Número 1" />
+      <input id="n2" type="number" placeholder="Número 2" />
+      <button onclick="calc('+')">Somar</button>
+      <button onclick="calc('-')">Subtrair</button>
+      <button onclick="calc('*')">Multiplicar</button>
+      <button onclick="calc('/')">Dividir</button>
+      <button onclick="calc('**')">Potência (^)</button>
+      <div id="out-calc" class="out"></div>
+    </div>
+  </section>
+
+  <section id="sec-game">
+    <h2>8) Mini-desafio: jogo de adivinhação</h2>
+    <div class="grid">
+      <input id="palpite" type="number" placeholder="Seu palpite (1-10)" />
+      <button onclick="tentar()">Tentar</button>
+      <button onclick="reiniciar()">Reiniciar jogo</button>
+      <div id="out-game" class="out"></div>
+    </div>
+  </section>
+
+  <!-- Daqui pra baixo são os exercícios da atividade -->
+  <div class="titulo-exercicios">Exercícios</div>
+
+  <section id="sec-ex1" class="exercicio">
+    <h2>Exercício 1) Maior de dois números</h2>
+    <div class="grid">
+      <button onclick="exMaior()">Informar dois números</button>
+      <div id="out-ex1" class="out"></div>
+    </div>
+  </section>
+
+  <section id="sec-ex2" class="exercicio">
+    <h2>Exercício 2) Tabuada do 7</h2>
+    <div class="grid">
+      <button onclick="exTabuada()">Mostrar tabuada do 7</button>
+      <div id="out-ex2" class="out"></div>
+    </div>
+  </section>
+
+  <section id="sec-ex3" class="exercicio">
+    <h2>Exercício 3) Nomes que começam com "A"</h2>
+    <div class="grid">
+      <button onclick="exFiltrarNomes()">Filtrar nomes</button>
+      <div id="out-ex3" class="out"></div>
+    </div>
+  </section>
+
+  <section id="sec-ex4" class="exercicio">
+    <h2>Exercício 4) Média de três notas</h2>
+    <div class="grid">
+      <input id="nota1" type="number" placeholder="Nota 1" />
+      <input id="nota2" type="number" placeholder="Nota 2" />
+      <input id="nota3" type="number" placeholder="Nota 3" />
+      <button onclick="exMedia()">Calcular média</button>
+      <div id="out-ex4" class="out"></div>
+    </div>
+  </section>
+
+  <section id="sec-ex5" class="exercicio">
+    <h2>Exercício 5) Potência na calculadora</h2>
+    <p>O botão <b>Potência (^)</b> está lá na calculadora da seção 7. Exemplo: 2 e 3 dá 2 elevado a 3 = 8.</p>
+  </section>
+
+  <script>
+    // 1) Variáveis
+    // Aqui eu guardo uns valores de tipos diferentes e mostro na tela
+    function exVariaveis() {
+      const nome = "Ana";        // texto (string)
+      let idade = 20;            // número (uso let porque ele muda logo abaixo)
+      const estudante = true;    // verdadeiro ou falso (boolean)
+      idade = idade + 1;         // aumentei a idade em 1 só pra mostrar que o let muda
+      const msg = `nome=${nome} (string)\nidade=${idade} (number)\nestudante=${estudante} (boolean)`;
+      document.getElementById('out-variaveis').textContent = msg;
+      console.log("[Variáveis]", { nome, idade, estudante });
+    }
+
+    // 2) Entrada/Saída
+    // O prompt abre uma caixinha pedindo o nome, e o alert mostra a resposta
+    function exIO() {
+      const nome = prompt("Qual é o seu nome?");
+      // se a pessoa não digitar nada (ou cancelar), aviso e paro por aqui
+      if (!nome) return alert("Sem nome, sem festa! :)");
+      alert("Olá, " + nome + "!");
+      console.log("Usuário digitou:", nome);
+    }
+
+    // 3) Decisão
+    // Pego a idade que a pessoa digitou e vejo se é maior ou menor de 18
+    function exIf() {
+      // o que vem do input é texto, então converto pra número
+      const idade = Number(document.getElementById('idade').value);
+      let texto;
+      if (Number.isNaN(idade)) {
+        texto = "Digite um número válido.";
+      } else if (idade >= 18) {
+        texto = "Maior de idade.";
+      } else {
+        texto = "Menor de idade.";
+      }
+      document.getElementById('out-if').textContent = texto;
+    }
+
+    // 4) Laços
+    // O for repete de 1 até 5, somando cada número no texto
+    function exFor() {
+      let s = "Contando 1→5 (for): ";
+      for (let i = 1; i <= 5; i++) s += i + " ";
+      document.getElementById('out-loops').textContent = s.trim();
+    }
+    // O while repete enquanto o i for maior ou igual a 1, e vai diminuindo
+    function exWhile() {
+      let s = "Contando 5→1 (while): ";
+      let i = 5;
+      while (i >= 1) { s += i + " "; i--; }
+      document.getElementById('out-loops').textContent = s.trim();
+    }
+
+    // 5) Arrays
+    // Um array é uma lista. Aqui passo por cada fruta e junto tudo num texto
+    function exArray() {
+      const frutas = ["maçã", "banana", "uva", "melão"];
+      let s = "Frutas: ";
+      for (const f of frutas) s += f + " | ";
+      // o slice tira o " | " que sobra no final
+      document.getElementById('out-array').textContent = s.slice(0, -3);
+      console.log("frutas.length =", frutas.length);
+    }
+
+    // 6) Funções
+    // A função soma recebe dois números e devolve o resultado
+    function soma(a, b) { return a + b; }
+    function exFuncao() {
+      const a = Number(document.getElementById('a').value);
+      const b = Number(document.getElementById('b').value);
+      // confiro se os dois são números mesmo antes de somar
+      if (Number.isNaN(a) || Number.isNaN(b)) {
+        document.getElementById('out-funcao').textContent = "Digite números válidos.";
+        return;
+      }
+      document.getElementById('out-funcao').textContent = `Resultado: ${soma(a, b)}`;
+    }
+
+    // 7) Calculadora (eventos + DOM)
+    // Cada botão chama essa função mandando a operação que quer fazer
+    function calc(op) {
+      const n1 = Number(document.getElementById('n1').value);
+      const n2 = Number(document.getElementById('n2').value);
+      if (Number.isNaN(n1) || Number.isNaN(n2)) {
+        document.getElementById('out-calc').textContent = "Digite números válidos.";
+        return;
+      }
+      let r;
+      if (op === '+') r = n1 + n2;
+      else if (op === '-') r = n1 - n2;
+      else if (op === '*') r = n1 * n2;
+      // na divisão, cuido do caso de dividir por zero pra não dar erro
+      else if (op === '/') r = n2 === 0 ? "∞ (divisão por zero)" : n1 / n2;
+      // Exercício 5: o ** é o "elevado a" (2 ** 3 = 8)
+      else if (op === '**') r = n1 ** n2;
+      document.getElementById('out-calc').textContent = `Resultado: ${r}`;
+    }
+
+    // 8) Jogo de adivinhação
+    // O computador sorteia um número de 1 a 10 e fica guardado em "segredo"
+    let segredo = Math.floor(Math.random() * 10) + 1;
+    let tentativas = 0;
+
+    function tentar() {
+      const p = Number(document.getElementById('palpite').value);
+      // só aceito palpite entre 1 e 10
+      if (Number.isNaN(p) || p < 1 || p > 10) {
+        document.getElementById('out-game').textContent = "Digite um número de 1 a 10.";
+        return;
+      }
+      tentativas++;  // conta mais uma tentativa
+      if (p === segredo) {
+        document.getElementById('out-game').textContent =
+          `Acertou! O número era ${segredo}. Tentativas: ${tentativas}.`;
+      } else if (p < segredo) {
+        document.getElementById('out-game').textContent = "Tente um número MAIOR.";
+      } else {
+        document.getElementById('out-game').textContent = "Tente um número MENOR.";
+      }
+    }
+
+    // Sorteia outro número e zera tudo pra jogar de novo
+    function reiniciar() {
+      segredo = Math.floor(Math.random() * 10) + 1;
+      tentativas = 0;
+      document.getElementById('out-game').textContent = "Novo jogo iniciado!";
+      document.getElementById('palpite').value = "";
+    }
+
+    // ===================== EXERCÍCIOS =====================
+
+    // Exercício 1: descobrir qual dos dois números é o maior
+    function exMaior() {
+      // peço os dois números e já converto pra número
+      const n1 = Number(prompt("Digite o primeiro número:"));
+      const n2 = Number(prompt("Digite o segundo número:"));
+      let texto;
+      if (Number.isNaN(n1) || Number.isNaN(n2)) {
+        texto = "Digite números válidos.";
+      } else if (n1 > n2) {
+        texto = `O maior número é ${n1}.`;
+      } else if (n2 > n1) {
+        texto = `O maior número é ${n2}.`;
+      } else {
+        texto = "Os números são iguais.";
+      }
+      alert(texto);                                          // mostra no alert
+      document.getElementById('out-ex1').textContent = texto; // e também na página
+    }
+
+    // Exercício 2: tabuada do 7
+    function exTabuada() {
+      let s = "Tabuada do 7\n";
+      // o \n pula de linha, então cada conta fica numa linha
+      for (let i = 1; i <= 10; i++) {
+        s += `7 x ${i} = ${7 * i}\n`;
+      }
+      document.getElementById('out-ex2').textContent = s.trim();
+    }
+
+    // Exercício 3: separar só os nomes que começam com A
+    function exFiltrarNomes() {
+      const nomes = ["Ana", "Bruno", "Alice", "Carlos", "André", "Beatriz", "Amanda", "Diego"];
+      // filter fica só com os nomes que passam no teste
+      // uso toUpperCase pra funcionar tanto com "A" quanto com "a"
+      const comA = nomes.filter(n => n.toUpperCase().startsWith("A"));
+      document.getElementById('out-ex3').textContent =
+        "Todos: " + nomes.join(", ") + "\nComeçam com A: " + comA.join(", ");
+      console.log("Nomes com A:", comA);
+    }
+
+    // Exercício 4: média de três notas
+    // Se a média for 6 ou mais, aprovado. Se não, recuperação/reprovado
+    function media(a, b, c) {
+      const m = (a + b + c) / 3;
+      return m >= 6 ? "Aprovado" : "Recuperação/Reprovado";
+    }
+    function exMedia() {
+      const a = Number(document.getElementById('nota1').value);
+      const b = Number(document.getElementById('nota2').value);
+      const c = Number(document.getElementById('nota3').value);
+      const saida = document.getElementById('out-ex4');
+      if (Number.isNaN(a) || Number.isNaN(b) || Number.isNaN(c)) {
+        saida.textContent = "Digite números válidos.";
+        return;
+      }
+      const m = (a + b + c) / 3;
+      // toFixed(2) deixa a média com 2 casas depois da vírgula
+      saida.textContent = `Média: ${m.toFixed(2)}\nSituação: ${media(a, b, c)}`;
+    }
+  </script>
+</body>
+</html>
